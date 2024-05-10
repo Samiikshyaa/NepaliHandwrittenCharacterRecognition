@@ -84,4 +84,4 @@ CNN Architecture:
 
 
 
-A major project submitted in partial fulfillment for the requirement of the Bachelors' degree in Computer Engineering. 
+A major project submitted in partial fulfillment for the requirement of the Bachelors' degree in Computer Engineering. (2023-2024) 
