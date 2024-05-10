@@ -42,14 +42,28 @@ CNN Architecture:
 #### Model Summary
 ![model summary](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/d43ae467-2b9f-41b5-9efa-1509dd844c4a)
 
+
+
 #### Accuracy Vs Epoch
 ![AccuracyVsEpoch](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/0b06eaf7-a5b2-4f0e-ada0-873919e79d1a)
+
+
 
 #### Loss Vs Epoch
 ![LossVsEpoch](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/21176cae-fd8e-49a9-b5ad-129e6cbdefa3)
 
 
 
+#### Sample Result (Real-Time Inputs)
+
+![tha](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/19857183-2e3a-48e3-b108-069511525523)
+![ka](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/21debd8e-fa59-4af2-a6ad-19dc42278540)
+![ja](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/9f06b91a-faf6-4af1-8898-ce1d7cfff160)
+![irrelavant1](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/e8d5e3d3-64d9-4eb7-af23-1e399981fac2)
+![irr1](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/74d8ae9f-3715-479e-a0ee-5948aa379db2)
+![chha](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/e3f84370-a6e6-4864-9da5-74f0c79f04d5)
+![7](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/a22ae8ec-28bf-4451-b229-e758e90fc5bb)
+![1](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/44b3c3ed-d53e-4bc4-b32e-e8cff89b9311)
 
 
 
