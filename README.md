@@ -61,7 +61,6 @@ CNN Architecture:
 ![ja](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/9f06b91a-faf6-4af1-8898-ce1d7cfff160)
 ![irrelavant1](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/e8d5e3d3-64d9-4eb7-af23-1e399981fac2)
 ![irr1](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/74d8ae9f-3715-479e-a0ee-5948aa379db2)
-![chha](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/e3f84370-a6e6-4864-9da5-74f0c79f04d5)
 ![7](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/a22ae8ec-28bf-4451-b229-e758e90fc5bb)
 ![1](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/44b3c3ed-d53e-4bc4-b32e-e8cff89b9311)
 
