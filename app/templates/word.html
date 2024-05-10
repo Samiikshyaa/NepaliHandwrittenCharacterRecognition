@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Prediction</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+    
+        .title-bar {
+            background-color: #111111;
+            padding: 19px;
+            text-align: right;
+        }
+    
+        .title-bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px;
+        }
+    
+        .title-bar a:hover {
+            color: #ffcc66; 
+        }
+    
+        .canvas-container {
+            display: flex;
+            margin-top: -10px;
+        }
+    
+        .canvas-container canvas {
+            background-color: black;
+        }
+
+        #finalButton, #clearAllButton {
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px; 
+        }
+    
+        #finalButton:hover, #clearAllButton:hover {
+            background-color: #dfd0b4;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <div class="title-bar">
+        <a href="/">Home</a>
+    </div>
+
+    <h3>Write here ↓  </h3>
+    <div class="canvas-container">
+        <div>
+            <canvas id="canvas1" width="200" height="200" style="border:1px solid #000; margin-left: 380px;"></canvas>
+            <div class="canvas-buttons">
+                <button onclick="clearCanvas(1)" style="margin-left: 370px;">Clear</button>
+                <button onclick="predict(1)">Next</button>
+            </div>
+            <div id="predictionOutput1" style="font-size: 18px; margin-left: 370px;"></div>
+            <div id="wordFormationOutput1" style="font-size: 15px;"></div>
+        </div>
+        <div>
+            <canvas id="canvas2" width="200" height="200" style="border:1px solid #000; margin-left: 2px;"></canvas>
+            <div class="canvas-buttons">
+                <button onclick="clearCanvas(2)">Clear</button>
+                <button onclick="predict(2)">Next</button>
+            </div>
+            <div id="predictionOutput2" style="font-size: 18px;"></div>
+            <div id="wordFormationOutput2" style="font-size: 15px;"></div>
+        </div>
+        <div>
+            <canvas id="canvas3" width="200" height="200" style="border:1px solid #000; margin-left: 2px;"></canvas>
+            <div class="canvas-buttons">
+                <button onclick="clearCanvas(3)">Clear</button>
+                <button onclick="predict(3)">Next</button>
+            </div>
+            <div id="predictionOutput3" style="font-size: 18px;"></div>
+        </div>
+    </div>
+    
+    <form id="predictForm" action="/predict" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="img_data" id="imgData" value="">
+    </form>
+
+    <br><br><br><br><br><br>
+    
+    
+    <button id="clearAllButton" onclick="clearAll()">Clear All</button>
+    <button id="finalButton" onclick="showFinalPrediction()">Predict</button>
+    <div id="finalPrediction" style="font-size: 18px;"></div>
+
+    <div id="instruction" style="font-size: 16px; margin-top: 20px; text-align: left; padding-left: 10px; position: absolute; bottom: 0; left: 0;">
+        Instruction: Click 'Next' after you write each letter. To rewrite a letter click 'Clear' below the canvas.
+    </div>
+
+    <script>
+        let canvas1 = document.getElementById("canvas1");
+        let ctx1 = canvas1.getContext("2d");
+
+        let canvas2 = document.getElementById("canvas2");
+        let ctx2 = canvas2.getContext("2d");
+
+        let canvas3 = document.getElementById("canvas3");
+        let ctx3 = canvas3.getContext("2d");
+
+        ctx1.lineWidth = 10;
+        ctx1.lineCap = "round";
+        ctx1.strokeStyle = "white";
+
+        ctx2.lineWidth = 10;
+        ctx2.lineCap = "round";
+        ctx2.strokeStyle = "white";
+
+        ctx3.lineWidth = 10;
+        ctx3.lineCap = "round";
+        ctx3.strokeStyle = "white";
+
+        let painting1 = false;
+        let painting2 = false;
+        let painting3 = false;
+
+        let predictionOutput1 = "";
+        let predictionOutput2 = "";
+        let predictionOutput3 = "";
+
+        function startPosition1(e) {
+            painting1 = true;
+            draw1(e);
+        }
+
+        function startPosition2(e) {
+            painting2 = true;
+            draw2(e);
+        }
+
+        function startPosition3(e) {
+            painting3 = true;
+            draw3(e);
+        }
+
+        function endPosition1() {
+            painting1 = false;
+            ctx1.beginPath();
+        }
+
+        function endPosition2() {
+            painting2 = false;
+            ctx2.beginPath();
+        }
+
+        function endPosition3() {
+            painting3 = false;
+            ctx3.beginPath();
+        }
+
+        function draw1(e) {
+            if (!painting1) return;
+
+            ctx1.lineTo(e.clientX - canvas1.offsetLeft, e.clientY - canvas1.offsetTop);
+            ctx1.stroke();
+            ctx1.beginPath();
+            ctx1.moveTo(e.clientX - canvas1.offsetLeft, e.clientY - canvas1.offsetTop);
+        }
+
+        function draw2(e) {
+            if (!painting2) return;
+
+            ctx2.lineTo(e.clientX - canvas2.offsetLeft, e.clientY - canvas2.offsetTop);
+            ctx2.stroke();
+            ctx2.beginPath();
+            ctx2.moveTo(e.clientX - canvas2.offsetLeft, e.clientY - canvas2.offsetTop);
+        }
+
+        function draw3(e) {
+            if (!painting3) return;
+
+            ctx3.lineTo(e.clientX - canvas3.offsetLeft, e.clientY - canvas3.offsetTop);
+            ctx3.stroke();
+            ctx3.beginPath();
+            ctx3.moveTo(e.clientX - canvas3.offsetLeft, e.clientY - canvas3.offsetTop);
+        }
+
+        function clearCanvas(canvasNumber) {
+            if (canvasNumber === 1) {
+                ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+            } else if (canvasNumber === 2) {
+                ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+            } else if (canvasNumber === 3) {
+                ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+            }
+            document.getElementById("predictionOutput" + canvasNumber).innerHTML = ""; 
+            document.getElementById("wordFormationOutput" + canvasNumber).innerHTML = "";
+        }
+
+        function clearAll() {
+                clearCanvas(1);
+                clearCanvas(2);
+                clearCanvas(3);
+                document.getElementById("finalPrediction").innerHTML = "";
+                predictionOutput1 = ""; 
+                predictionOutput2 = "";
+                predictionOutput3 = "";
+        }
+
+            function predict(canvasNumber) {
+        document.getElementById("predictionOutput" + canvasNumber).innerHTML = "Predicting...";
+
+        let imgData;
+        if (canvasNumber === 1) {
+            imgData = canvas1.toDataURL();
+        } else if (canvasNumber === 2) {
+            imgData = canvas2.toDataURL();
+        } else if (canvasNumber === 3) {
+            imgData = canvas3.toDataURL();
+        }
+        document.getElementById("imgData").value = imgData;
+
+        fetch('/predict', {
+            method: 'POST',
+            body: new FormData(document.getElementById('predictForm')),
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            if (data.probability < 0.85) {
+                predictionOutput = "Are you sure it is Nepali Character?";
+                document.getElementById("predictionOutput" + canvasNumber).innerHTML = "Are you sure it is Nepali Character?" ;
+            } else {
+                predictionOutput = data.prediction;
+                document.getElementById("predictionOutput" + canvasNumber).innerHTML = data.prediction ; 
+            }
+            
+            if (canvasNumber === 1) {
+                predictionOutput1 = predictionOutput;
+            } else if (canvasNumber === 2) {
+                predictionOutput2 = predictionOutput;
+            } else if (canvasNumber === 3) {
+                predictionOutput3 = predictionOutput;
+            }
+
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function clearAll() {
+        clearCanvas(1);
+        clearCanvas(2);
+        clearCanvas(3);
+        document.getElementById("finalPrediction").innerHTML = ""; 
+        predictionOutput1 = ""; 
+        predictionOutput2 = "";
+        predictionOutput3 = "";
+    }
+
+    function showFinalPrediction() {
+        const finalPrediction = (predictionOutput1 || '') + (predictionOutput2 || '') + (predictionOutput3 || '');
+        let  Prediction = "Prediction: " + finalPrediction;
+        document.getElementById("finalPrediction").innerHTML = "Prediction: " + finalPrediction;
+        speakPrediction(Prediction);
+    }
+
+    function speakPrediction(prediction) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(prediction);
+            utterance.lang = 'hi-IN';
+            synth.speak(utterance);
+    }
+
+        canvas1.addEventListener("mousedown", startPosition1);
+        canvas1.addEventListener("mouseup", endPosition1);
+        canvas1.addEventListener("mousemove", draw1);
+
+        canvas2.addEventListener("mousedown", startPosition2);
+        canvas2.addEventListener("mouseup", endPosition2);
+        canvas2.addEventListener("mousemove", draw2);
+
+        canvas3.addEventListener("mousedown", startPosition3);
+        canvas3.addEventListener("mouseup", endPosition3);
+        canvas3.addEventListener("mousemove", draw3);
+    </script>
+    
+
+</body>
+</html>

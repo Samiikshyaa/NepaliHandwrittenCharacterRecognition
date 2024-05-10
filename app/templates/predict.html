@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .title-bar {
+            background-color: #111111;
+            padding: 19px;
+            text-align: right;
+        }
+
+        .title-bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .title-bar a:hover {
+            color: #ffcc66;
+        }
+
+        #canvas {
+            background-color: black;
+        }
+
+        button {
+            padding: 5px 15px;
+            font-size: 16px; 
+            border-radius: 5px;
+            margin: 5px; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="title-bar">
+        <a href="/">Home</a>
+    </div>
+
+    <h3>Write here ↓  </h3>
+    <canvas id="canvas" width="170" height="170" style="border:1px solid #000;"></canvas>
+    <br>
+    <button onclick="clearCanvas()">Clear</button>
+    <button onclick="predict()">Predict</button>
+
+    <form id="predictForm" action="/predict" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="img_data" id="imgData" value="">
+    </form>
+
+    <div id="predictionOutput" style="font-size: 18px;"></div>
+    <div id="wordFormationOutput" style="font-size: 18px;"></div>
+    <div id="instruction" style="font-size: 16px; margin-top: 20px; text-align: left; padding-left: 10px; position: absolute; bottom: 0; left: 0;">
+        Instruction: Make sure you write the letter nice and big in the middle of the canvas.
+    </div>
+
+    <script>
+        const nepaliDictionary = {
+            "क": "कलम",
+            "ख": "खरायो",
+            "ग": "गमला",
+            "घ": "घर",
+            "ङ": "ङ्यार्र",
+            "च": "चरा",
+            "छ": "छाता",
+            "ज": "जहाज",
+            "झ": "झरना",
+            "ञ": "गोरुसिङ्गे ञ",
+            "ट": "टपरी",
+            "ठ": "ठग",
+            "ड": "डाँडा",
+            "ढ": "ढाका",
+            "ण": "तीनधर्के ण",
+            "त": "ताराजु",
+            "थ": "थाल",
+            "द": "दाँत",
+            "ध": "धरती",
+            "न": "नाना",
+            "प": "पात",
+            "फ": "फल",
+            "ब": "बाटो",
+            "भ": "भुइँ",
+            "म": "माछा",
+            "य": "युवा",
+            "र": "राम्रो",
+            "ल": "लामा",
+            "व": "वृक्ष",
+            "श": "शिक्षक",
+            "ष": "षट्कोण",
+            "स": "सानो",
+            "ह": "हात",
+            "क्ष": "क्षत्रिय",
+            "त्र": "त्रिभुवन",
+            "ज्ञ": "ज्ञानी"
+        };
+        const excludedCharacters = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+
+        ctx.lineWidth = 10;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "white";
+
+        let painting = false;
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!painting) return;
+
+            ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById("predictionOutput").innerHTML = ""; 
+            document.getElementById("wordFormationOutput").innerHTML = "";
+        }
+
+        function predict() {
+            document.getElementById("predictionOutput").innerHTML = "Predicting...";
+
+            let imgData = canvas.toDataURL();
+            document.getElementById("imgData").value = imgData;
+
+            fetch('/predict', {
+                method: 'POST',
+                body: new FormData(document.getElementById('predictForm')),
+            })
+            .then(response => response.json())
+            .then(data => {
+                let prediction;
+                if (data.probability < 0.85) {
+                    prediction = "Are you sure it is a Nepali Character?" ;
+                    document.getElementById("predictionOutput").innerHTML = "Are you sure it is Nepali Character?" ;
+
+                } else {
+                    prediction = "Prediction: " + data.prediction;
+                    document.getElementById("predictionOutput").innerHTML = "Prediction: " + data.prediction + "<br>Probability: " + (data.probability * 100).toFixed(2) + "%";    
+                }
+
+                speakPrediction(prediction);
+
+                if (data.probability > 0.85  && !excludedCharacters.includes(data.prediction)) {
+                    const character = data.prediction;
+                    const wordFormation = nepaliDictionary[character];
+                    document.getElementById("wordFormationOutput").innerHTML = "<br>Word starting with " + character + " : " + wordFormation;
+                } else {
+                    document.getElementById("wordFormationOutput").innerHTML = ""; 
+                }
+                
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function speakPrediction(prediction) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(prediction);
+            utterance.lang = 'hi-IN';
+            synth.speak(utterance);
+        }
+
+        canvas.addEventListener("mousedown", startPosition);
+        canvas.addEventListener("mouseup", endPosition);
+        canvas.addEventListener("mousemove", draw);
+    </script>
+</body>
+</html>

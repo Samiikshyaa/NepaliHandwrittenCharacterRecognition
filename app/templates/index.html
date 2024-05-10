@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepali Handwritten Character Recognition</title>
+
+    <style>
+        body {
+            text-align: center;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .title-bar {
+            background-color: #111111;
+            padding: 19px;
+            text-align: right;
+        }
+
+        .title-bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #111111;
+            width: fit-content;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #ffffff;
+            text-decoration: none;
+            text-align: left;
+            display: block;
+            padding: 10px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            display: flex;
+            max-width: 96%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .profile-image {
+            width: 60%;
+            height: auto;
+            margin-top: 20px;
+            object-fit: cover;
+            float: left;
+            margin-right: 20px;
+        }
+
+        .content {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .content h4 {
+            margin-left: 0;
+        }
+
+        h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #ff9900;
+            font-size: 45px;
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 5px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        a {
+            color: #8f8477;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ffcc66;
+        }
+
+        .button-container {
+            position: absolute; 
+            bottom: 0; 
+            right: 150px; 
+            display: flex;
+            flex-direction: column; 
+        }
+
+        .button-container a {
+            margin-top: 20px; 
+            background-color: #ff9900;
+            padding: 15px 30px; 
+            border-radius: 8px; 
+            color: #1a1a1a;
+            text-decoration: none;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .button-container a:hover {
+            background-color: #ffcc66;
+        }
+
+        .button-container p {
+            margin-bottom: 10px; 
+            color: #ffffff;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="title-bar">
+        <a href="#">Home</a>
+        <div class="dropdown">
+            <a href="#">Explore</a>
+            <div class="dropdown-content">
+                <a href="/predict">Write on Canvas</a>
+                <a href="/upload">Upload Image</a>
+                <a href="/word">Word Predict</a>
+            </div>
+        </div>
+    </div>
+
+    <h1 position="center">Welcome to Nepali Handwritten Character Recognition</h1> <hr>
+
+    <div class="container">
+        <img src="/static/download.png" alt="Nepali Consonants and Numerals" class="profile-image">
+        <div class="content">
+        </div>
+        <div class="button-container">
+            <p>What do you want to do?</p>
+            <a href="/predict">Write on canvas</a>
+            <a href="/upload">Upload Image</a>
+            <a href="/word">Word Predict</a> 
+        </div>
+    </div>
+
+    <p style="float:left; margin-left: 250px;"> Nepali consonants and numerals</p><br><br><br><br> 
+
+    <br><br><br>
+    <hr>
+     <p> Nepali Handwritten Character Recognition 2023 © Designed for a major project</p>
+     <p> Creators: Pratik Kumar Labh, Samikshya Timalsina, Suyog Sharma, Utsav Sharma</p>   
+
+    <script>
+        function redirectTo() {
+            var selectBox = document.getElementById("options");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            if (selectedValue === "predict") {
+                window.location.href = "/predict";
+            } else if (selectedValue === "upload") {
+                window.location.href = "/upload";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image - Prediction</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .title-bar {
+            background-color: #111111;
+            padding: 19px;
+            text-align: right;
+        }
+
+        .title-bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .title-bar a:hover {
+            color: #ffcc66; 
+        }
+
+        #imageFile {
+            margin-top: 20px;
+            padding: 10px; 
+            font-size: 16px; 
+        }
+
+        button {
+            padding: 3px 15px;
+            font-size: 16px; 
+            border-radius: 5px;
+            margin-top: 20px; 
+        }
+
+        #uploadedImageContainer {
+            margin-top: 20px;
+        }
+
+        #uploadedImage {
+            max-width: 400px;
+        }
+
+        #predictionOutput {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        #buttonContainer {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #chooseNextButton {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title-bar">
+        <a href="/">Home</a>
+    </div>
+
+    <h3>Select Image of Character Here ↓ </h3>
+    <div id="uploadedImageContainer">
+        <img id="uploadedImage" src="#" style="max-width: 400px;">
+    </div>
+    <form id="uploadForm" action="/uploadimg" method="post" enctype="multipart/form-data">
+        <input type="file" name="imageFile" id="imageFile" accept="image/*" onchange="displayImage()" style="width: 300px;">
+    </form>
+
+    <div id="buttonContainer">
+        <button id="chooseNextButton" onclick="chooseNext()">Clear</button>
+        <button onclick="predict()">Predict</button>
+    </div>
+
+
+    <div id="predictionOutput" style="font-size: 18px;"></div>
+    <div id="wordFormationOutput" style="font-size: 15px;"></div>
+
+    <div id="instruction" style="font-size: 16px; margin-top: 20px; text-align: left; padding-left: 10px; position: relative; bottom: 0; left: 0;">
+        Instruction: Make sure you upload the image of
+         single character written on black background.
+    </div>
+
+    <script>
+                const nepaliDictionary = {
+            "क": "कलम",
+            "ख": "खरायो",
+            "ग": "गमला",
+            "घ": "घर",
+            "ङ": "ङम्ख्या",
+            "च": "चरा",
+            "छ": "छाता",
+            "ज": "जहाज",
+            "झ": "झरना",
+            "ञ": "ञन्त्र",
+            "ट": "टपरी",
+            "ठ": "ठाम",
+            "ड": "डाँडा",
+            "ढ": "ढल",
+            "ण": "णाल",
+            "त": "ताराजु",
+            "थ": "थल",
+            "द": "दाँत",
+            "ध": "धरती",
+            "न": "नाना",
+            "प": "पात",
+            "फ": "फल",
+            "ब": "बाटो",
+            "भ": "भुइँ",
+            "म": "माछा",
+            "य": "युवा",
+            "र": "राम्रो",
+            "ल": "लामा",
+            "व": "वृक्ष",
+            "श": "शिक्षक",
+            "ष": "षट्क",
+            "स": "सानो",
+            "ह": "हात",
+            "क्ष": "क्षत्रिय",
+            "त्र": "त्रिभुवन",
+            "ज्ञ": "ज्ञानी"
+        };
+        const excludedCharacters = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+
+        function displayImage() {
+            var fileInput = document.getElementById('imageFile');
+            var file = fileInput.files[0];
+            if (file) {
+                var image = document.getElementById('uploadedImage');
+                image.src = URL.createObjectURL(file);
+            }
+        }
+
+        function predict() {
+            var fileInput = document.getElementById('imageFile');
+            var file = fileInput.files[0];
+            if (file) {
+                var formData = new FormData();
+                formData.append('imageFile', file);
+
+                document.getElementById("predictionOutput").innerHTML = "";
+
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    formData.append('img_data', event.target.result.split(",")[1]);
+                    sendPredictionRequest(formData);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function sendPredictionRequest(formData) {
+            fetch('/uploadimg', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                let prediction;
+                if (data.probability < 0.85) {
+                    prediction = "Are you sure it is a Nepali Character?" ;
+                    document.getElementById("predictionOutput").innerHTML = "Are sure it is Nepali Character?" ;
+                   
+                } else {
+                    prediction = "Prediction: " + data.prediction;
+                    document.getElementById("predictionOutput").innerHTML = "Prediction: " + data.prediction + "<br>Probability: " + (data.probability * 100).toFixed(2) + "%";    
+                }
+
+                speakPrediction(prediction);
+
+                if (data.probability > 0.85  && !excludedCharacters.includes(data.prediction)) {
+                    const character = data.prediction;
+                    const wordFormation = nepaliDictionary[character];
+                    document.getElementById("wordFormationOutput").innerHTML = "<br>Word starting with " + character + " : " + wordFormation;
+                } else {
+                    document.getElementById("wordFormationOutput").innerHTML = ""; // Clear word formation output if character not in dictionary or excluded
+                }
+                
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function speakPrediction(prediction) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(prediction);
+            utterance.lang = 'hi-IN';
+            synth.speak(utterance);
+        }
+
+        function chooseNext() {
+            document.getElementById("predictionOutput").innerHTML = "";
+            document.getElementById("wordFormationOutput").innerHTML = ""; 
+            document.getElementById("imageFile").value = "";
+            document.getElementById("uploadedImage").src = "#";
+        }
+    </script>
+</body>
+</html>
