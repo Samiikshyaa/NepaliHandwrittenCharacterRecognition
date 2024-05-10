@@ -1,4 +1,4 @@
-# Nepali-Handwritten-Character-Recognition-Using-CNN
+# Nepali Handwritten Character Recognition Using CNN
 
 ## Introduction
 Handwritten character recognition is crucial for various applications, including
