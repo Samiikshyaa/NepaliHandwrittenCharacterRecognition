@@ -31,6 +31,7 @@ metric. It demonstrated the system's outstanding accuracy of 98.37%.
 
 #### CNN-based classification
 CNN Flow:
+
 ![CNN flow](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/2c9e0f56-912d-49f5-a3f6-4d7336c39ed7)
 
 CNN Architecture:
