@@ -22,6 +22,13 @@ metric. It demonstrated the system's outstanding accuracy of 98.37%.
 #### Block Diagram of the System
 ![system block](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/b032d5f3-3c12-4ecb-bcdb-47d0dfd715be)
 
+## Requirements
+1. Tensorflow
+2. Flask
+3. Numpy
+4. Pandas
+5. Matplotlib
+
 
 ### Implementation Process
 
@@ -54,7 +61,7 @@ CNN Architecture:
 
 
 
-#### Sample Result (Real-Time Inputs)
+## Sample Result (Real-Time Inputs)
 
 ![tha](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/19857183-2e3a-48e3-b108-069511525523)
 ![ka](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/21debd8e-fa59-4af2-a6ad-19dc42278540)
@@ -68,6 +75,10 @@ CNN Architecture:
 
 
 
+## User Interface
+![UI](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/954ad025-676d-45f3-bbac-53b05843bd32)
 
 
 
+
+A major project submitted in partial fulfillment for the requirement of the Bachelors' degree in Computer Engineering. 
