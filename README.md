@@ -27,3 +27,30 @@ metric. It demonstrated the system's outstanding accuracy of 98.37%.
 
 #### Data Set
 (https://www.kaggle.com/datasets/rishianand/devanagari-character-set/data) is a dataset of Devanagari Script Characters. It comprises 92000 images [32x32 px] corresponding to 46 characters, consonants "ka" to "gya", and the digits 0 to 9. The vowels are missing. The CSV file is of the dimension 92000 * 1025. There are 1024 input features of pixel values in grayscale (0 to 255). 
+![dataset sample](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/2d5dd1e0-77b9-4cfd-86d6-1930e630947c)
+
+#### CNN-based classification
+CNN Flow:
+![CNN flow](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/2c9e0f56-912d-49f5-a3f6-4d7336c39ed7)
+
+CNN Architecture:
+![Architecture](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/639984ea-189b-4609-a28b-92df471bbcfd)
+
+
+## Result And Analysis
+#### Model Summary
+![model summary](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/d43ae467-2b9f-41b5-9efa-1509dd844c4a)
+
+#### Accuracy Vs Epoch
+![AccuracyVsEpoch](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/0b06eaf7-a5b2-4f0e-ada0-873919e79d1a)
+
+#### Loss Vs Epoch
+![LossVsEpoch](https://github.com/Samiikshyaa/NepaliHandwrittenCharacterRecognition/assets/98102213/21176cae-fd8e-49a9-b5ad-129e6cbdefa3)
+
+
+
+
+
+
+
+
