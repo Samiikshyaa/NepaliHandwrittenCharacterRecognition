@@ -1,6 +1,6 @@
 # Nepali Handwritten Character Recognition Using CNN
 
-## Introduction
+## Abstract
 Handwritten character recognition is crucial for various applications, including
 language processing and document digitization. This system focuses specifically on
 Nepali handwritten character recognition, utilizing Convolutional Neural Network
