@@ -85,3 +85,4 @@ CNN Architecture:
 
 
 A major project submitted in partial fulfillment for the requirement of the Bachelors' degree in Computer Engineering. (2023-2024) 
+Prepared By: Samikshya Timalsina, Utsav Sharma, Pratik Kumar Labh, Suyog Sharma
